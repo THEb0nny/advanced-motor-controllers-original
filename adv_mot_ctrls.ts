@@ -4,7 +4,7 @@
 
 /**
 * OFDL Advanced Motor Controller Block module (algorithm part).
-* Based 1.2 ver, 2023/10/08.
+* Based 1.1 ver, 2023/09/27.
 */
 //% block="AdvMotCtrls" weight=89 color=#02ab38 icon=""
 namespace advmotctrls {
