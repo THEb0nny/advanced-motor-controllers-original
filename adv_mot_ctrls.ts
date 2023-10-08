@@ -4,9 +4,9 @@
 
 /**
 * OFDL Advanced Motor Controller Block module (algorithm part).
-* Based 1.1 ver, 2023/09/27.
+* Based 1.2 ver, 2023/10/08.
 */
-//% block="Advanced Motor Controllers" weight=89 color=#0fbc11 icon=""
+//% block="AdvMotCtrls" weight=89 color=#02ab38 icon=""
 namespace advmotctrls {
     let err_old: number;
     let kp: number;
@@ -34,7 +34,7 @@ namespace advmotctrls {
     let ACC2_isNEG: number;
 
     //% block
-    function PD_Config(kp_in: number, kd_in: number, pwr_in: number) {
+    export function PD_Config(kp_in: number, kd_in: number, pwr_in: number) {
         kp = kp_in;
         kd = kd_in;
         pwr = pwr_in;
@@ -42,7 +42,7 @@ namespace advmotctrls {
     }
 
     //% block
-    function PD(e1: number, e2: number): number[] {
+    export function PD(e1: number, e2: number): number[] {
         let err = e1 - e2;
         let U = err * kp + (err - err_old) * kd;
         let pB = pwr + U;
@@ -52,7 +52,7 @@ namespace advmotctrls {
     }
 
     //% block
-    function PD_pwrIn(pwrIn: number, e1: number, e2: number): number[] {
+    export function PD_pwrIn(pwrIn: number, e1: number, e2: number): number[] {
         let err = e1 - e2;
         let U = err * kp + (err - err_old) * kd;
         let pB = pwrIn + U;
@@ -62,7 +62,7 @@ namespace advmotctrls {
     }
 
     //% block
-    function Sync_Config(kp_in: number, vB_in: number, vC_in: number) {
+    export function Sync_Config(kp_in: number, vB_in: number, vC_in: number) {
         sync_kp = kp_in;
         sync_vB = vB_in;
         sync_vC = vC_in;
@@ -71,7 +71,7 @@ namespace advmotctrls {
     }
 
     //% block
-    function Sync(eB: number, eC: number): number[] {
+    export function Sync(eB: number, eC: number): number[] {
         let U = ((sync_vC * eB) - (sync_vB * eC)) * sync_kp;
         let pB = sync_vB - sync_vCsign * U;
         let pC = sync_vC + sync_vBsign * U;
@@ -79,7 +79,7 @@ namespace advmotctrls {
     }
 
     //% block
-    function Sync_pwrIn(eB: number, eC: number, S_KP: number, vB: number, vC: number): number[] {
+    export function Sync_pwrIn(eB: number, eC: number, S_KP: number, vB: number, vC: number): number[] {
         let U = ((vC * eB) - (vB * eC)) * S_KP;
         let pB = vB - (Math.abs(vC + 1) - Math.abs(vC)) * U;
         let pC = vC + (Math.abs(vB + 1) - Math.abs(vB)) * U;
@@ -87,7 +87,7 @@ namespace advmotctrls {
     }
 
     //% block
-    function AccOneEnc_Config(minPwr_in: number, maxPwr_in: number, accelDist_in: number, decelDist_in: number, totalDist_in: number) {
+    export function AccOneEnc_Config(minPwr_in: number, maxPwr_in: number, accelDist_in: number, decelDist_in: number, totalDist_in: number) {
         ACC1_minPwr = Math.abs(minPwr_in);
         ACC1_maxPwr = Math.abs(maxPwr_in);
         ACC1_accelDist = accelDist_in;
@@ -99,7 +99,7 @@ namespace advmotctrls {
     }
 
     //% block
-    function AccTwoEnc_Config(minPwr_in: number, maxPwr_in: number, accelDist_in: number, decelDist_in: number, totalDist_in: number) {
+    export function AccTwoEnc_Config(minPwr_in: number, maxPwr_in: number, accelDist_in: number, decelDist_in: number, totalDist_in: number) {
         ACC2_minPwr = Math.abs(minPwr_in);
         ACC2_maxPwr = Math.abs(maxPwr_in);
         ACC2_accelDist = accelDist_in;
@@ -111,7 +111,7 @@ namespace advmotctrls {
     }
 
     //% block
-    function AccOneEnc(e1: number, pwrOut: number): boolean {
+    export function AccOneEnc(e1: number, pwrOut: number): boolean {
         let done: boolean;
         let currEnc = Math.abs(e1);
         if (currEnc >= ACC1_totalDist) {
@@ -147,7 +147,7 @@ namespace advmotctrls {
     }
 
     //% block
-    function AccTwoEnc(e1: number, e2: number): any[] {
+    export function AccTwoEnc(e1: number, e2: number): any[] {
         let done: boolean;
         let pwrOut: number;
         let currEnc = (Math.abs(e1) + Math.abs(e2)) / 2;
