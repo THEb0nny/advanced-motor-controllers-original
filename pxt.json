@@ -14,7 +14,7 @@
         "test.ts"
     ],
     "targetVersions": {
-        "target": "1.4.36",
+        "target": "1.4.37",
         "targetId": "ev3"
     },
     "supportedTargets": [

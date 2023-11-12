@@ -6,7 +6,7 @@
 * OFDL Advanced Motor Controller Block module (algorithm part).
 * Based 1.1 ver, 2023/09/27.
 */
-//% block="AdvMotCtrls" weight=89 color=#02ab38 icon=""
+//% block="AdvMotCtrls" weight=89 color=#02ab38 icon="\uf3fd"
 namespace advmotctrls {
     let err_old: number;
     let kp: number;
