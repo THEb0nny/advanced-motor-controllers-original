@@ -50,10 +50,9 @@ function Example6() {
 function Example7() {
     motors.mediumB.setInverted(true); motors.mediumC.setInverted(false);
     motors.mediumB.setBrake(true); motors.mediumC.setBrake(true);
-    //motors.mediumB.setRegulated(false); motors.mediumC.setRegulated(false);
     motors.mediumB.clearCounts(); motors.mediumC.clearCounts();
-    advmotctrls.AccTwoEnc_Config(15, 90, 300, 300, 4000);
-    advmotctrls.Sync_Config(0.25, 25, 50);
+    advmotctrls.AccTwoEnc_Config(15, 70, 300, 300, 8000);
+    advmotctrls.PD_Config(0.8, 3, 50);
     while (true) {
         let encB = motors.mediumB.angle();
         let encC = motors.mediumC.angle();
@@ -65,6 +64,11 @@ function Example7() {
         let out2 = advmotctrls.PD_pwrIn(out[0], rcs2, rcs3);
         motors.mediumB.run(out2[0])
         motors.mediumC.run(out2[1]);
+        brick.clearScreen();
+        brick.printValue("out0", out[0], 1);
+        brick.printValue("out1", out[1], 2);
+        brick.printValue("out20", out2[0], 3);
+        brick.printValue("out21", out2[1], 4);
         if (out[1]) break;
     }
     motors.mediumB.stop(); motors.mediumC.stop();
