@@ -65,11 +65,6 @@ function Example7() {
         let out2 = advmotctrls.PD_pwrIn(out[0], rcs2, rcs3);
         motors.mediumB.run(out2[0])
         motors.mediumC.run(out2[1]);
-        brick.clearScreen();
-        brick.printValue("out0", out[0], 1);
-        brick.printValue("out1", out[1], 2);
-        brick.printValue("out20", out2[0], 3);
-        brick.printValue("out21", out2[1], 4);
         if (out[1]) break;
         control.timer1.pauseUntil(20);
     }
