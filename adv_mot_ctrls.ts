@@ -8,6 +8,86 @@
 */
 //% block="AdvMotCtrls" weight=89 color=#02ab38 icon="\uf3fd"
 namespace advmotctrls {
+
+    enum PowerMot {
+        pB,
+        pC
+    }
+
+    export class AdvMotCtrls {
+
+        private err_old: number;
+        private kp: number;
+        private kd: number;
+        private pB: number;
+        private pC: number;
+
+        private sync_kp: number;
+        private sync_vB: number;
+        private sync_vC: number;
+        private sync_vBsign: number;
+        private sync_vCsign: number;
+
+        private ACC_minPwr: number;
+        private ACC_maxPwr: number;
+        private ACC_accelDist: number;
+        private ACC_decelDist: number;
+        private ACC_totalDist: number;
+        private ACC_isNEG: number;
+
+        constructor() {
+
+        }
+
+        //% block
+        public PD_Config(kp_in: number, kd_in: number) {
+            this.kp = kp_in;
+            this.kd = kd_in;
+            this.err_old = 0;
+        }
+
+        //% block
+        public PD_pwrIn(pwrIn: number, e1: number, e2: number) {
+            let err = e1 - e2;
+            let U = err * this.kp + (err - this.err_old) * this.kd;
+            this.pB = pwrIn + U;
+            this.pC = pwrIn - U;
+            this.err_old = err;
+        }
+
+        //% block
+        public PD_getPWR(powerMot: PowerMot): number {
+            return (powerMot == PowerMot.pB ? this.pB : this.pC);
+        }
+
+        //% block
+        public Sync_Config(kp_in: number, vB_in: number, vC_in: number) {
+            this.sync_kp = kp_in;
+            this.sync_vB = vB_in;
+            this.sync_vC = vC_in;
+            this.sync_vBsign = Math.abs(vB_in + 1) - Math.abs(vB_in);
+            this.sync_vCsign = Math.abs(vC_in + 1) - Math.abs(vC_in);
+        }
+
+        // Блок должен управлять моторами синхроннизированно с постоянной скоростью
+        //% block
+        public Sync(eB: number, eC: number) {
+            let U = ((this.sync_vC * eB) - (this.sync_vB * eC)) * this.sync_kp;
+            this.pB = this.sync_vB - this.sync_vCsign * U;
+            this.pC = this.sync_vC + this.sync_vBsign * U;
+        }
+
+        // Блок должен управлять моторами синхроннизированно
+        //% block
+        public Sync_pwrIn(eB: number, eC: number, S_KP: number, vB: number, vC: number) {
+            let U = ((vC * eB) - (vB * eC)) * S_KP;
+            this.pB = vB - (Math.abs(vC + 1) - Math.abs(vC)) * U;
+            this.pC = vC + (Math.abs(vB + 1) - Math.abs(vB)) * U;
+        }
+
+    }
+
+    /*
     let err_old: number;
     let kp: number;
     let kd: number;
@@ -182,4 +262,5 @@ namespace advmotctrls {
         }
         return [pwrOut, done];
     }
+    */
 }
