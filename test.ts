@@ -1,3 +1,4 @@
+/*
 function Example51() {
     motors.mediumB.setInverted(true); motors.mediumC.setInverted(false);
     motors.mediumB.setBrake(true); motors.mediumC.setBrake(true);
@@ -70,6 +71,7 @@ function Example7() {
     }
     motors.mediumB.stop(); motors.mediumC.stop();
 }
+*/
 
 // Функция для нормализации сырых значений с датчика
 function GetNormRefValCS(refRawValCS: number, bRefRawValCS: number, wRefRawValCS: number): number {
@@ -88,7 +90,7 @@ function Main() {
     brick.printString("RUN", 7, 13);
     brick.buttonEnter.pauseUntil(ButtonEvent.Pressed);
     brick.clearScreen();
-    Example7();
+    //Example7();
 }
 
 Main();

@@ -8,7 +8,7 @@
 */
 //% block="AdvMotCtrls" weight=89 color=#02ab38 icon="\uf3fd"
 namespace advmotctrls {
-
+    
     enum PowerMot {
         pB,
         pC
@@ -75,6 +75,8 @@ namespace advmotctrls {
             let U = ((this.sync_vC * eB) - (this.sync_vB * eC)) * this.sync_kp;
             this.pB = this.sync_vB - this.sync_vCsign * U;
             this.pC = this.sync_vC + this.sync_vBsign * U;
+            motors.mediumB.run(this.pB);
+            motors.mediumC.run(this.pC);
         }
 
         // Блок должен управлять моторами синхроннизированно
@@ -83,9 +85,13 @@ namespace advmotctrls {
             let U = ((vC * eB) - (vB * eC)) * S_KP;
             this.pB = vB - (Math.abs(vC + 1) - Math.abs(vC)) * U;
             this.pC = vC + (Math.abs(vB + 1) - Math.abs(vB)) * U;
+            motors.mediumB.run(this.pB);
+            motors.mediumC.run(this.pC);
         }
 
     }
+
+    export const AdvencedMotorCtrls = new AdvMotCtrls();
 
     /*
     let err_old: number;
