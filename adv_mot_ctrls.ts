@@ -17,7 +17,7 @@ namespace advmotctrls {
     export class AdvMotCtrls {
 
         private err_old: number;
-        private kp: number;
+        private kp: number = 1;
         private kd: number;
         private pB: number;
         private pC: number;
@@ -35,8 +35,10 @@ namespace advmotctrls {
         private ACC_totalDist: number;
         private ACC_isNEG: number;
 
-        constructor() {
+        private motB: motors.Motor;
+        private motC: motors.Motor;
 
+        constructor() {
         }
 
         //% block
@@ -52,13 +54,17 @@ namespace advmotctrls {
             let U = err * this.kp + (err - this.err_old) * this.kd;
             this.pB = pwrIn + U;
             this.pC = pwrIn - U;
+            this.motB.run(this.pB);
+            this.motC.run(this.pC);
             this.err_old = err;
         }
 
+        /*
         //% block
         public PD_getPWR(powerMot: PowerMot): number {
             return (powerMot == PowerMot.pB ? this.pB : this.pC);
         }
+        */
 
         //% block
         public Sync_Config(kp_in: number, vB_in: number, vC_in: number) {
