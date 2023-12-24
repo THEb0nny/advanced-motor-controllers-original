@@ -38,20 +38,39 @@ namespace advmotctrls {
             this.Chassis_Config(motors.largeB, motors.largeC); // Defl motors
         }
 
+        /**
+            Установить моторы для шасси.
+            @param left_motor это motors.Motors
+            @param right_motor это motors.Motors
+        **/
+        //% blockId=Chassis_Config
+        //% block="Установить моторы шасси|$left_motor|$right_motor"
         public Chassis_Config(left_motor: motors.Motor, right_motor: motors.Motor) {
             this.motB = left_motor;
             this.motC = right_motor;
         }
 
-        //% block
+        /**
+            Конфигурация ПД регулятора.
+            @param kp_in входное значение Kp, eg. 1
+            @param kd_in входное значение Kd, eg. 0
+        **/
+        //% blockId=PD_Config
+        //% block="Конфигурация ПД|Kp = $kp_in|Kd = $kd_in"
         public PD_Config(kp_in: number, kd_in: number) {
             this.kp = kp_in;
             this.kd = kd_in;
             this.err_old = 0; // Reset prev error PD regulator
         }
 
-        // Блок управляет моторами с установленной скоростью на основе PD регулятора
-        //% block
+        /**
+            Блок управляет моторами с установленной скоростью на основе PD регулятора.
+            @param pwrIn устанавливается мощность моторов, eg. 50
+            @param e1 входное значение 1 из которого формируется ошибка, eg. 0
+            @param e2 входное значение 2 из которого формируется ошибка, eg. 0
+        **/
+        //% blockId=PD_pwrIn
+        //% block="Управление мощностью с PD|e1 = $e1|e2 = $e2"
         public PD_pwrIn(pwrIn: number, e1: number, e2: number) {
             let err = e1 - e2;
             let U = err * this.kp + (err - this.err_old) * this.kd;
@@ -62,7 +81,14 @@ namespace advmotctrls {
             this.err_old = err;
         }
 
-        //% block
+        /**
+            Конфигурация синхронизации шассии.
+            @param kp_in входное значение Kp синхронизации, eg. 1
+            @param vB_in входное значение мозности правого мотора, eg. 50
+            @param vC_in входное значение мощности левого мотора, eg. 50
+        **/
+        //% blockId=Sync_Config
+        //% block="Конфигурация синхронизированного управления шасси|Kp = $kp_in|vB = $vB_in|vC = $vC_in"
         public Sync_Config(kp_in: number, vB_in: number, vC_in: number) {
             this.sync_kp = kp_in;
             this.sync_vB = vB_in;
@@ -71,8 +97,13 @@ namespace advmotctrls {
             this.sync_vCsign = Math.abs(vC_in + 1) - Math.abs(vC_in);
         }
 
-        // Блок должен управлять моторами синхроннизированно с постоянной скоростью
-        //% block
+        /**
+            Блок должен управлять моторами синхроннизированно с постоянной скоростью.
+            @param eB входное значение энкодера левого мотора
+            @param eC входное значение энкодера правого мотора
+        **/
+        //% blockId=Sync
+        //% block="Синхронизацированное управление шасси|eB = $eB|eC = $eC"
         public Sync(eB: number, eC: number) {
             let U = ((this.sync_vC * eB) - (this.sync_vB * eC)) * this.sync_kp;
             this.pB = this.sync_vB - this.sync_vCsign * U;
@@ -81,8 +112,15 @@ namespace advmotctrls {
             this.motC.run(this.pC);
         }
 
-        // Блок должен управлять моторами синхроннизированно с установленной скоростью
-        //% block
+        /**
+            Блок должен управлять моторами синхроннизированно с установленной скоростью.
+            @param eB входное значение энкодера левого мотора
+            @param eC входное значение энкодера правого мотора
+            @param vB значение скорости левого мотора, eg. 50
+            @param vC значение скорости правого мотора, eg. 50
+        **/
+        //% blockId=Sync_pwrIn
+        //% block="Синхронизацированное управление шасси|eB = $eB|eC = $eC|c мощностью vB = $vB|vC = $vC"
         public Sync_pwrIn(eB: number, eC: number, vB: number, vC: number) {
             let U = ((vC * eB) - (vB * eC)) * this.sync_kp;
             this.pB = vB - (Math.abs(vC + 1) - Math.abs(vC)) * U;
@@ -93,7 +131,9 @@ namespace advmotctrls {
 
     }
 
+    //% fixedInstance
     export const AdvencedMotorCtrls1 = new AdvMotCtrls();
+    //% fixedInstance
     export const AdvencedMotorCtrls2 = new AdvMotCtrls();
 
     /*
