@@ -1,59 +1,51 @@
-/*
+// Внутри цикла не надо ничего выводить в консоль или печатать на экран, поведение робота становится хуже!
+
 function Example51() {
-    motors.mediumB.setInverted(true); motors.mediumC.setInverted(false);
-    motors.mediumB.setBrake(true); motors.mediumC.setBrake(true);
-    motors.mediumB.clearCounts(); motors.mediumC.clearCounts();
-    advmotctrls.Sync_Config(0.02, 50, 50);
+    advmotctrls.SyncConfig(0.08, 50, 50);
     while (true) {
-        let encB = motors.mediumB.angle();
-        let encC = motors.mediumC.angle();
-        let out = advmotctrls.Sync(encB, encC);
-        motors.mediumB.run(out[0]); motors.mediumC.run(out[1]);
+        control.timer1.reset();
+        let encB = Math.abs(motors.mediumB.angle());
+        let encC = Math.abs(motors.mediumC.angle());
+        //console.log(`encB: ${encB}, encC: ${encC}`);
+        //console.sendToScreen();
+        advmotctrls.SyncMotorsControl(encB, encC);
         if ((encB + encC) / 2 >= 600) break;
+        control.timer1.pauseUntil(10);
     }
     motors.mediumB.stop(); motors.mediumC.stop();
 }
 
 function Example52() {
-    motors.mediumB.setInverted(true); motors.mediumC.setInverted(false);
-    motors.mediumB.setBrake(true); motors.mediumC.setBrake(true);
-    motors.mediumB.clearCounts(); motors.mediumC.clearCounts();
-    advmotctrls.Sync_Config(0.02, 25, 50);
+    advmotctrls.SyncConfig(0.02, 25, 50);
     while (true) {
-        let encB = motors.mediumB.angle();
-        let encC = motors.mediumC.angle();
-        let out = advmotctrls.Sync(encB, encC);
-        motors.mediumB.run(out[0]); motors.mediumC.run(out[1]);
-        if ((encB + encC) / 2 >= 600) break;
+        control.timer1.reset();
+        let encB = Math.abs(motors.mediumB.angle());
+        let encC = Math.abs(motors.mediumC.angle());
+        advmotctrls.SyncMotorsControl(encB, encC);
+        if ((encB + encC) / 2 >= 775) break;
+        control.timer1.pauseUntil(10);
     }
     motors.mediumB.stop(); motors.mediumC.stop();
 }
 
 function Example6() {
-    motors.mediumB.setInverted(true); motors.mediumC.setInverted(false);
-    motors.mediumB.setBrake(true); motors.mediumC.setBrake(true);
-    //motors.mediumB.setRegulated(false); motors.mediumC.setRegulated(false);
-    motors.mediumB.clearCounts(); motors.mediumC.clearCounts();
-    advmotctrls.AccTwoEnc_Config(15, 90, 300, 300, 1000);
-    advmotctrls.PD_Config(0.25, 0.7, 50);
+    advmotctrls.AccTwoEncConfig(5, 90, 100, 300, 1000);
+    advmotctrls.SyncConfig(0.06);
     while (true) {
+        control.timer1.reset();
         let encB = motors.mediumB.angle();
         let encC = motors.mediumC.angle();
         let out = advmotctrls.AccTwoEnc(encB, encC);
-        let out2 = advmotctrls.Sync_pwrIn(encB, encC, 0.02, out[0], out[0]);
-        motors.mediumB.run(out2[0])
-        motors.mediumC.run(out2[1]);
-        if (out[1]) break;
+        advmotctrls.SyncPwrIn(encB, encC, out.pwrOut, out.pwrOut);
+        if (out.isDone) break;
+        control.timer1.pauseUntil(1);
     }
     motors.mediumB.stop(); motors.mediumC.stop();
 }
 
 function Example7() {
-    motors.mediumB.setInverted(true); motors.mediumC.setInverted(false);
-    motors.mediumB.setBrake(true); motors.mediumC.setBrake(true);
-    motors.mediumB.clearCounts(); motors.mediumC.clearCounts();
-    advmotctrls.AccTwoEnc_Config(15, 70, 200, 300, 8000);
-    advmotctrls.PD_Config(0.7, 1, 50);
+    advmotctrls.AccTwoEncConfig(15, 70, 200, 300, 4000);
+    advmotctrls.ConfigPD(0.7, 1);
     while (true) {
         control.timer1.reset();
         let encB = motors.mediumB.angle();
@@ -63,15 +55,12 @@ function Example7() {
         let rrcs3 = sensors.color3.light(LightIntensityMode.ReflectedRaw);
         let rcs2 = GetNormRefValCS(rrcs2, B_REF_RAW_CS2, W_REF_RAW_CS2);
         let rcs3 = GetNormRefValCS(rrcs3, B_REF_RAW_CS3, W_REF_RAW_CS3);
-        let out2 = advmotctrls.PD_pwrIn(out[0], rcs2, rcs3);
-        motors.mediumB.run(out2[0])
-        motors.mediumC.run(out2[1]);
-        if (out[1]) break;
-        control.timer1.pauseUntil(20);
+        advmotctrls.PDRegulatorPwrIn(rcs2, rcs3, out.pwrOut);
+        if (out.isDone) break;
+        control.timer1.pauseUntil(1);
     }
     motors.mediumB.stop(); motors.mediumC.stop();
 }
-*/
 
 // Функция для нормализации сырых значений с датчика
 function GetNormRefValCS(refRawValCS: number, bRefRawValCS: number, wRefRawValCS: number): number {
@@ -87,10 +76,14 @@ const B_REF_RAW_CS3 = 640;
 const W_REF_RAW_CS3 = 462;
 
 function Main() {
+    motors.mediumB.setInverted(true); motors.mediumC.setInverted(false);
+    motors.mediumB.setBrake(true); motors.mediumC.setBrake(true);
+    motors.mediumB.clearCounts(); motors.mediumC.clearCounts();
     brick.printString("RUN", 7, 13);
     brick.buttonEnter.pauseUntil(ButtonEvent.Pressed);
     brick.clearScreen();
-    //Example7();
+    MyExample51();
+    brick.buttonEnter.pauseUntil(ButtonEvent.Pressed);
 }
 
 Main();

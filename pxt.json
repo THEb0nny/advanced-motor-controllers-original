@@ -1,17 +1,20 @@
 {
     "name": "advanced-motor-controllers",
-    "version": "0.1",
+    "version": "0.2",
     "description": "OFDL Advanced Motor Controller Block module (algorithm part) - beta",
     "license": "MIT",
     "dependencies": {
-        "ev3": "*"
+        "ev3": "*",
+        "automation": "github:microsoft/pxt-automation#v0.0.3"
     },
     "files": [
         "README.md",
-        "adv_mot_ctrls.ts"
+        "adv_mot_ctrls.ts",
+        "adv_mo_ctrls2.ts"
     ],
     "testFiles": [
-        "test.ts"
+        "test.ts",
+        "test2.ts"
     ],
     "targetVersions": {
         "target": "1.4.37",
