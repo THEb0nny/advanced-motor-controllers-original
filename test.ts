@@ -36,8 +36,8 @@ function Example6() {
         let encB = motors.mediumB.angle();
         let encC = motors.mediumC.angle();
         let out = advmotctrls.AccTwoEnc(encB, encC);
-        advmotctrls.SyncPwrIn(encB, encC, out.pwrOut, out.pwrOut);
         if (out.isDone) break;
+        advmotctrls.SyncPwrIn(encB, encC, out.pwrOut, out.pwrOut);
         control.timer1.pauseUntil(1);
     }
     motors.mediumB.stop(); motors.mediumC.stop();
