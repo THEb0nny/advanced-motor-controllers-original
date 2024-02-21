@@ -9,12 +9,10 @@
     },
     "files": [
         "README.md",
-        "adv_mot_ctrls.ts",
-        "adv_mo_ctrls2.ts"
+        "adv_mot_ctrls.ts"
     ],
     "testFiles": [
-        "test.ts",
-        "test2.ts"
+        "test.ts"
     ],
     "targetVersions": {
         "target": "1.4.37",

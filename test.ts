@@ -83,7 +83,7 @@ function Main() {
     brick.printString("RUN", 7, 13);
     brick.buttonEnter.pauseUntil(ButtonEvent.Pressed);
     brick.clearScreen();
-    MyExample51();
+    Example51();
     brick.buttonEnter.pauseUntil(ButtonEvent.Pressed);
 }
 
