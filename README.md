@@ -1,5 +1,5 @@
 
-> Открыть эту страницу в [https://theb0nny.github.io/advanced-motor-controllers/](https://theb0nny.github.io/advanced-motor-controllers/)
+> Открыть эту страницу в [https://theb0nny.github.io/advanced-motor-controllers-original/](https://theb0nny.github.io/advanced-motor-controllers-original/)
 
 ## Использовать это расширение
 
@@ -8,7 +8,7 @@
 * открыть [https://makecode.mindstorms.com/](https://makecode.mindstorms.com/)
 * нажмите на **Новый проект**
 * нажмите **Расширения** в меню-шестерёнке
-* найдите **https://github.com/theb0nny/advanced-motor-controllers** и импортируйте
+* найдите **https://github.com/theb0nny/advanced-motor-controllers-original** и импортируйте
 
 ## Править этот проект
 
@@ -16,7 +16,7 @@
 
 * открыть [https://makecode.mindstorms.com/](https://makecode.mindstorms.com/)
 * нажмите на **Импорт**, затем **Импорт URL**
-* вставьте **https://github.com/theb0nny/advanced-motor-controllers** и нажмите Импорт
+* вставьте **https://github.com/theb0nny/advanced-motor-controllers-original** и нажмите Импорт
 
 #### Метаданные (используются для поиска, рендеринга)
 
