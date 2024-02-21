@@ -12,15 +12,8 @@ namespace advmotctrls2 {
     let syncVLeftSign: number;
     let syncVRightSign: number;
 
-    /**
-        Конфигурация синхронизации шассии.
-        @param kp_in входное значение Kp синхронизации, eg. 1
-        @param vB_in входное значение мощности левого мотора, eg. 50
-        @param vC_in входное значение мощности правого мотора, eg. 50
-    **/
-    //% blockId=SyncConfig
-    //% block="Configuraton sync shassis control Kp = $kp_in|vB = $vB_in|vC = $vC_in"
-    export function SyncConfig(vLeft: number, vRight: number) {
+    //% blockId=SyncMotorsConfig
+    export function SyncMotorsConfig(vLeft: number, vRight: number) {
         syncVLeft = vLeft;
         syncVRight = vRight;
         syncVLeftSign = Math.abs(vLeft + 1) - Math.abs(vLeft);

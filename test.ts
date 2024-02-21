@@ -78,6 +78,7 @@ const W_REF_RAW_CS3 = 462;
 function Main() {
     motors.mediumB.setInverted(true); motors.mediumC.setInverted(false);
     motors.mediumB.setBrake(true); motors.mediumC.setBrake(true);
+    motors.mediumB.stop(); motors.mediumC.stop();
     motors.mediumB.clearCounts(); motors.mediumC.clearCounts();
     brick.printString("RUN", 7, 13);
     brick.buttonEnter.pauseUntil(ButtonEvent.Pressed);

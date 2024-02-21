@@ -1,5 +1,5 @@
 function MyExample51() {
-    advmotctrls2.SyncConfig(30, 30);
+    advmotctrls2.SyncMotorsConfig(30, 30);
 
     automation.pid1.setGains(0.03, 0, 0.5); // Установка значений регулятору
     automation.pid1.setControlSaturation(-100, 100); // Ограничения ПИДа
@@ -14,7 +14,6 @@ function MyExample51() {
 
         const encB = Math.abs(motors.mediumB.angle());
         const encC = Math.abs(motors.mediumC.angle());
-
         const error = advmotctrls2.GetErrorSyncMotors(encB, encC);
         automation.pid1.setPoint(error);
         const U = automation.pid1.compute(loopTime, 0);
@@ -23,7 +22,7 @@ function MyExample51() {
         motors.mediumC.run(powers.powerRight);
 
         if ((encB + encC) / 2 >= 600) break;
-        control.timer1.pauseUntil(5);
+        control.timer1.pauseUntil(1);
     }
     motors.mediumBC.stop();
 }
